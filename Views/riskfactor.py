@@ -11,11 +11,9 @@ def retrieveData(url):
 
 def createLayer(data):
     layer = []
-
     riskFactor = data["Risk"]
     colors, sizes = retrieveRiskScales(riskFactor)
-
-    for i, d in data.iterrows():
+    for i, _ in data.iterrows():
         row = data[i:i+1]
         layer.append({
             'type': 'ScatterplotLayer',
@@ -28,14 +26,8 @@ def createLayer(data):
 
 
 def plotMap(data):
-    st.deck_gl_chart(
-        viewport={
-            'lat': 37.76,
-            'long': 110,
-            'zoom': 0
-        },
-        layers=createLayer(data)
-    )
+    st.deck_gl_chart(viewport={'lat': 37.76,'long': 110,'zoom': 0},
+                     layers=createLayer(data))
 
 
 def retrieveRiskScales(risk):
@@ -51,17 +43,17 @@ def retrieveRiskScales(risk):
         size.append(R*15)
     return color, size
 
+
 def inputDescription():
-    image = 'Data/graph.PNG'
-    st.image("Data/graph.png", width = 650)
     st.button("Share this")
-    st.write("Above map shows countries with the greatest exposure to a China slowdown directly or indirectly. It was calculated based on five indicators:" )
+    st.write("Above map shows countries with the greatest exposure to a China slowdown directly or indirectly. It was calculated based on five indicators:")
     st.write("Exports of goods and services/GDP (%)")
     st.write("FDI inflows/GDP (%)")
     st.write("Personal remittances received/GDP (%)")
-    st.write("Migrants/population (%)") 
+    st.write("Migrants/population (%)")
     st.write("International tourism receipts/total exports (%).")
     st.write("Each indicator is given an equal weight of 0.20 with the highest possible sub-index score of 1.")
+
 
 def view():
     file = "Data/RiskData.csv"

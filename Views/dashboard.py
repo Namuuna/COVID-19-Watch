@@ -2,6 +2,8 @@ import requests
 import streamlit as st
 import pandas as pd
 import numpy as np
+import altair as alt
+from datetime import datetime
 
 
 @st.cache
@@ -28,9 +30,9 @@ def createLayer(data):
     layer = []
 
     freq = data["freq"]
-    sizes,color,opacity = retrieveScales(freq)
+    sizes, color, opacity = retrieveScales(freq)
 
-    for i, d in data.iterrows():
+    for i, _ in data.iterrows():
         row = data[i:i+1]
         layer.append({
             'type': 'ScatterplotLayer',
@@ -38,8 +40,7 @@ def createLayer(data):
             'radiusScale': 50,
             'radiusMinPixels': sizes[i],
             'getFillColor': color[i],
-            'opacity': opacity[i],
-
+            'opacity': opacity[i],  
         })
     return layer
 
@@ -57,9 +58,9 @@ def retrieveScales(freq):
         o = f / 2000
         o = 0.5 if o < 0.5 else o
         opacity.append(o)
-        color.append([r,90,80])
+        color.append([r, 90, 80])
         size.append(s)
-    return size,color,opacity
+    return size, color, opacity
 
 
 def plotMap(data):
@@ -73,6 +74,36 @@ def getPositiveCount(data):
     for date in data:
         count += int(data[date])
     return count
+
+
+def createTimeData(data):
+    time = {}
+    timeData = []
+    data = data["locations"]
+    for d in data:
+        for date in d["history"]:
+            count = int(d["history"][date])
+            if date in time:
+                time[date] += count
+            else:
+                time[date] = count            
+
+    for t in time:
+        date = t
+        cases = int(time[t])
+        timeData.append([date, cases])
+
+    timeData = pd.DataFrame(timeData, columns=["date", "cases"])
+    timeData["date"] = pd.to_datetime(timeData["date"])
+    timeData = timeData.sort_values(by=["date"])
+
+    return timeData
+
+
+def plotTimeData(data):
+    c = alt.Chart(data,width=700).mark_circle().encode(
+        x='date', y='cases')
+    st.altair_chart(c)
 
 
 def retrieveCountryData(data):
@@ -123,12 +154,17 @@ def view():
     # Scatter plot for world map
     data = getData[selection]
     mapData = createMap(data)
-
     st.subheader("Map Distribution")
     plotMap(mapData)
 
     st.button("Share this")
 
+    # Time series data
+    st.subheader("Time Series Plot")
+    timeData = createTimeData(data)
+    plotTimeData(timeData)
+
     # Country Data
+    st.subheader("Total Cases By Country")
     countryData = retrieveCountryData(data)
     st.table(countryData)
