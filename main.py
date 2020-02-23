@@ -1,9 +1,9 @@
 import streamlit as st
 
-from Views.intro import view as intro
-from Views.viz import view as viz
-
-
+# Import Views
+from Views.dashboard import view as dashboard
+from Views.riskfactor import view as riskfactor
+from Views.covidNearMe import view as covidNearMe
 
 
 if __name__ == '__main__':
@@ -11,13 +11,14 @@ if __name__ == '__main__':
 
     st.sidebar.title("Menu")
 
-    menuOptions = ["Introduction","Graphs","Risk Rate"]
+    menuOptions = ["Dashboard", "Risk Factor", "COVID near me?"]
 
-    menu = st.sidebar.selectbox("Features",menuOptions)
+    menu = st.sidebar.selectbox("Features", menuOptions)
 
     views = {
-    "Introduction"  : intro,
-    "Graphs"        : viz
+        "Dashboard": dashboard,
+        "Risk Factor": riskfactor,
+        "COVID near me?": covidNearMe,
     }
 
     views[menu]()
