@@ -1,7 +1,7 @@
 import streamlit as st
 
 from Views.intro import view as intro
-from Views.viz import view as viz
+from Views.dashboard import view as dashboard
 
 
 
@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     views = {
     "Introduction"  : intro,
-    "Graphs"        : viz
+    "Graphs"        : dashboard
     }
 
     views[menu]()
