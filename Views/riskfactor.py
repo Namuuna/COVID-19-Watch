@@ -54,6 +54,7 @@ def retrieveRiskScales(risk):
 def inputDescription():
     image = 'Data/graph.PNG'
     st.image("Data/graph.png", width = 650)
+    st.button("Share this")
     st.write("Above map shows countries with the greatest exposure to a China slowdown directly or indirectly. It was calculated based on five indicators:" )
     st.write("Exports of goods and services/GDP (%)")
     st.write("FDI inflows/GDP (%)")

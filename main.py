@@ -7,6 +7,7 @@ from Views.covidNearMe import view as covidNearMe
 
 
 if __name__ == '__main__':
+    st.image("Data/Logo2.jpg", width = 80)
     st.title("coronavirus - Watch")
 
     st.sidebar.title("Menu")

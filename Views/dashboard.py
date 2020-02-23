@@ -127,6 +127,8 @@ def view():
     st.subheader("Map Distribution")
     plotMap(mapData)
 
+    st.button("Share this")
+
     # Country Data
     countryData = retrieveCountryData(data)
     st.table(countryData)

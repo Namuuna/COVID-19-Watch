@@ -77,6 +77,7 @@ def view():
             st.subheader("Infected Provinces:")
             p = pd.DataFrame(province, columns=["Province"])
             st.table(p)
+            st.button("Share this")
 
     except:
         st.warning("Invalid Input!")
