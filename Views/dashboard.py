@@ -28,7 +28,7 @@ def createLayer(data):
     layer = []
 
     freq = data["freq"]
-    sizes = retrieveScales(freq)
+    sizes,color,opacity = retrieveScales(freq)
 
     for i, d in data.iterrows():
         row = data[i:i+1]
@@ -37,7 +37,8 @@ def createLayer(data):
             'data': row,
             'radiusScale': 50,
             'radiusMinPixels': sizes[i],
-            'getFillColor': [240, 90, 80],
+            'getFillColor': color[i],
+            'opacity': opacity[i],
 
         })
     return layer
@@ -45,12 +46,20 @@ def createLayer(data):
 
 def retrieveScales(freq):
     size = []
+    color = []
+    opacity = []
     for f in freq:
         s = f / 50
         s = 5 if s < 5 else s
         s = 12 if s > 12 else s
+        r = f / 20
+        r = 150 if r < 150 else r
+        o = f / 2000
+        o = 0.5 if o < 0.5 else o
+        opacity.append(o)
+        color.append([r,90,80])
         size.append(s)
-    return size
+    return size,color,opacity
 
 
 def plotMap(data):
