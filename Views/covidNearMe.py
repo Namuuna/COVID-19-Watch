@@ -1,5 +1,6 @@
 from math import sin, cos, sqrt, atan2, radians
 import streamlit as st
+import geocoder
 import requests
 import pandas as pd
 import numpy as np
@@ -59,8 +60,14 @@ def view():
     coords, latest, province = retrieveCoords(rawData)
 
     # User Inputs
-    lat = st.text_input("Latitude", value="39.9526")
-    long = st.text_input("Longitude", value="75.1652")
+    v1 = "39.9526"
+    v2 = "75.1652"
+    if st.button("Locate Me!"):
+        myLoc = geocoder.ip("me").latlng
+        v1, v2 = myLoc[0], myLoc[1]
+    lat = st.text_input("Latitude", value=v1)
+    long = st.text_input("Longitude", value=v2)    
+        
     radius = st.slider("Radius (km)", min_value=1, max_value=1000, value=10)
 
     # Perform Calculation
@@ -81,3 +88,4 @@ def view():
 
     except:
         st.warning("Invalid Input!")
+        pass
